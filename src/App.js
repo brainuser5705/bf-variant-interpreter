@@ -2,6 +2,10 @@
 // import './App.css';
 import { useState, createContext } from 'react';
 import SymbolInput from './components/SymbolInput';
+import VariantButton from './components/VariantButton';
+import { ook } from './data/variants';
+
+const variants = [ ook ];
 
 const SymbolContext = createContext(null);
 
@@ -34,11 +38,14 @@ function App() {
         >
           Learn React
         </a> */}
-
+        <h1>Test</h1>
         <SymbolContext.Provider value={{symbolMap, setSymbolMap}}>
           {Object.keys(symbolMap).map(type => (
             <SymbolInput key={type} type={type} />
           ))}
+          { variants.map(variant => (
+            <VariantButton key={variant["name"]} name={variant["name"]} symbols={variant["symbols"]} />)
+          )}
         </SymbolContext.Provider>
 
       </header>

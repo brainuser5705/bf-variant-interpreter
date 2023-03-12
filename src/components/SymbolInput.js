@@ -10,11 +10,13 @@ function SympolInput(props) {
     // value attribtue of input needs to be set to a state variable, so that
     // it can be updated through the UI and the React app itself
     const [ displayValue, setDisplayValue ] = useState(symbolMap[type]);
+    const [ placeholderValue, setPlaceholderValue ] = useState(symbolMap[type]);
 
     return (
         <input
             type="text"
             value={displayValue}
+            placeholder={placeholderValue}
             onChange={e => {
                 let newSymbol = e.target.value;
                 setDisplayValue(newSymbol);
@@ -22,6 +24,9 @@ function SympolInput(props) {
                 if (newSymbol !== '' && !(Object.values(symbolMap).includes(newSymbol))){
                     symbolMap[type] = newSymbol;
                     setSymbolMap(symbolMap);
+                    if (newSymbol.length == 1){
+                        setPlaceholderValue(newSymbol);
+                    }
                     console.log(symbolMap);   
                 }else{
                     console.log("Can't change");
