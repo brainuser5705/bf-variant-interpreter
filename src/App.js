@@ -1,5 +1,5 @@
 // import logo from './logo.svg';
-// import './App.css';
+import './App.css';
 import { useState, createContext, useEffect } from 'react';
 import SymbolInput from './components/SymbolInput';
 import VariantButton from './components/VariantButton';
@@ -11,16 +11,6 @@ const SymbolContext = createContext(null);
 
 function App() {
 
-  // const [ symbolMap, setSymbolMap ] = useState({
-  //   "shift_right": ">",
-  //   "shift_left": "<",
-  //   "increment": "+",
-  //   "decrement": "-",
-  //   "output": ".",
-  //   "input": ",",
-  //   "start_while": "[",
-  //   "end_while": "]"
-  // });
   // const [ lexicalTokens, setLexicalTokens ] = useState([]);
 
   const [ shiftRightSymbol, setShiftRightSymbol ] = useState(">");
@@ -42,6 +32,8 @@ function App() {
     "start_while": [ startWhileSymbol, setStartWhileSymbol ],
     "end_while": [ endWhileSymbol, setEndWhileSymbol ]
   }
+
+  const [ isValidSymbols, setIsValidSymbols ] = useState(true);
 
   useEffect(() => {
     console.log({
@@ -72,7 +64,7 @@ function App() {
           Learn React
         </a> */}
         <h1>Test</h1>
-        <SymbolContext.Provider value={symbolMap}>
+        <SymbolContext.Provider value={{ symbolMap, setIsValidSymbols}}>
           {Object.keys(symbolMap).map(type => (
             <SymbolInput key={type} type={type} />
           ))}

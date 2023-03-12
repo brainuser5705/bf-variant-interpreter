@@ -36,3 +36,7 @@
     transform: rotate(360deg);
   }
 }
+
+.invalid-symbol-field {
+  background-color: rgb(255, 140, 140);
+}
