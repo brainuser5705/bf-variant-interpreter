@@ -3,10 +3,18 @@ import { SymbolContext } from "../App"
 
 function VariantButton(props){
 
-    const { setSymbolMap } = useContext(SymbolContext);
-    
+    const symbolMap = useContext(SymbolContext);
+
+    function updateSymbolMap(newSymbols){
+        Object.keys(symbolMap).map(type => {
+            let newSymbol = newSymbols[type];
+            let setSymbolFunction = symbolMap[type][1];
+            setSymbolFunction(newSymbol);
+        });
+    }
+
     return (
-        <button onClick={() => {setSymbolMap(props.symbols); console.log(props.symbols);}}>
+        <button onClick={() => updateSymbolMap(props.newSymbols)}>
             { props.name }
         </button>
     );

@@ -1,38 +1,23 @@
-import { useState, useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { SymbolContext } from '../App';
 
 function SympolInput(props) {
 
-    const type = props.type;
-
-    const { symbolMap, setSymbolMap } = useContext(SymbolContext);
-
     // value attribtue of input needs to be set to a state variable, so that
     // it can be updated through the UI and the React app itself
-    const [ displayValue, setDisplayValue ] = useState(symbolMap[type]);
-    const [ placeholderValue, setPlaceholderValue ] = useState(symbolMap[type]);
-
+    const symbolMap = useContext(SymbolContext);
+    const [symbol, setSymbol] = symbolMap[props.type];
+    
     return (
         <input
             type="text"
-            value={displayValue}
-            placeholder={placeholderValue}
+            value={symbol}
+            placeholder={"Need to define a symbol"}
             onChange={e => {
-                let newSymbol = e.target.value;
-                setDisplayValue(newSymbol);
-
-                if (newSymbol !== '' && !(Object.values(symbolMap).includes(newSymbol))){
-                    symbolMap[type] = newSymbol;
-                    setSymbolMap(symbolMap);
-                    if (newSymbol.length == 1){
-                        setPlaceholderValue(newSymbol);
-                    }
-                    console.log(symbolMap);   
-                }else{
-                    console.log("Can't change");
-                }
+                setSymbol(e.target.value);
             }} 
         />
+
     );
 }
 
