@@ -20,7 +20,16 @@ function App() {
   const [ outputSymbol, setOutputSymbol ] = useState(".");
   const [ inputSymbol, setInputSymbol ] = useState(",");
   const [ startWhileSymbol, setStartWhileSymbol ] = useState("[");
-  const [ endWhileSymbol, setEndWhileSymbol ] = useState("[");
+  const [ endWhileSymbol, setEndWhileSymbol ] = useState("]");
+
+  const [ isShiftRightValid, setIsShiftRightValid ] = useState(true);
+  const [ isShiftLeftValid, setIsShiftLeftValid ] = useState(true);
+  const [ isIncrementValid, setIsIncrementValid] = useState(true);
+  const [ isDecrementValid, setIsDecrementValid ] = useState(true);
+  const [ isOutputValid, setIsOutputValid] = useState(true);
+  const [ isInputValid, setIsInputValid ] = useState(true);
+  const [ isStartWhileValid, setIsStartWhileValid ] = useState(true);
+  const [ isEndWhileValid, setIsEndWhileValid ] = useState(true);
 
   const symbolMap = {
     "shift_right" : [ shiftRightSymbol, setShiftRightSymbol ],
@@ -33,7 +42,16 @@ function App() {
     "end_while": [ endWhileSymbol, setEndWhileSymbol ]
   }
 
-  const [ isValidSymbols, setIsValidSymbols ] = useState(true);
+  const validSymbolMap = {
+    "shift_right" : [ isShiftRightValid, setIsShiftRightValid ],
+    "shift_left" : [ isShiftLeftValid, setIsShiftLeftValid ],
+    "increment": [ isIncrementValid, setIsIncrementValid ],
+    "decrement": [ isDecrementValid, setIsDecrementValid ],
+    "output": [ isOutputValid, setIsOutputValid ],
+    "input": [ isInputValid, setIsInputValid ],
+    "start_while": [ isStartWhileValid, setIsStartWhileValid ],
+    "end_while": [ isEndWhileValid, setIsEndWhileValid ]
+  }
 
   useEffect(() => {
     console.log({
@@ -51,20 +69,8 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        {/* <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a> */}
         <h1>Test</h1>
-        <SymbolContext.Provider value={{ symbolMap, setIsValidSymbols}}>
+        <SymbolContext.Provider value={{ symbolMap, validSymbolMap }}>
           {Object.keys(symbolMap).map(type => (
             <SymbolInput key={type} type={type} />
           ))}
