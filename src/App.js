@@ -4,6 +4,7 @@ import { useState, createContext, useEffect } from 'react';
 import SymbolInput from './components/SymbolInput';
 import VariantButton from './components/VariantButton';
 import { ook } from './data/variants';
+import { TextEditor } from './components/TextEditor';
 
 const variants = [ ook ];
 
@@ -53,30 +54,34 @@ function App() {
     "end_while": [ isEndWhileValid, setIsEndWhileValid ]
   }
 
+  const [ sourceCode, setSourceCode ] = useState("");
+
   useEffect(() => {
-    console.log({
-      "shift_right": shiftRightSymbol,
-      "shift_left": shiftLeftSymbol,
-      "increment": incrementSymbol,
-      "decrement": decrementSymbol,
-      "output": outputSymbol,
-      "input": inputSymbol,
-      "start_while": startWhileSymbol,
-      "end_while": endWhileSymbol
-    });
-  }, [symbolMap]);
+    // console.log({
+    //   "shift_right": shiftRightSymbol,
+    //   "shift_left": shiftLeftSymbol,
+    //   "increment": incrementSymbol,
+    //   "decrement": decrementSymbol,
+    //   "output": outputSymbol,
+    //   "input": inputSymbol,
+    //   "start_while": startWhileSymbol,
+    //   "end_while": endWhileSymbol
+    // });
+    console.log(sourceCode);
+  }, [sourceCode]);
 
   return (
     <div className="App">
       <header className="App-header">
         <h1>Test</h1>
-        <SymbolContext.Provider value={{ symbolMap, validSymbolMap }}>
+        <SymbolContext.Provider value={{ symbolMap, validSymbolMap, sourceCode, setSourceCode}}>
           {Object.keys(symbolMap).map(type => (
             <SymbolInput key={type} type={type} />
           ))}
           { variants.map(variant => (
             <VariantButton key={variant["name"]} name={variant["name"]} newSymbols={variant["symbols"]} />)
           )}
+          <TextEditor></TextEditor>
         </SymbolContext.Provider>
 
       </header>

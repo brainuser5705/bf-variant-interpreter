@@ -9,6 +9,19 @@ function SympolInput(props) {
     const [ symbol, setSymbol ] = symbolMap[props.type];
     const [ isValidSymbol, setIsValidSymbol ] = validSymbolMap[props.type];
 
+    // function updateSourceCode(oldSymbol, newSymbol){
+    //     newSourceCode = "";
+    //     for (let tuple of lexicalTokens){
+    //         let value = tuple[0];
+    //         if (oldSymbol === value){
+    //             tuple[0] =  
+    //         }else{
+    //             newSourceCode += value;
+    //         }
+    //     }
+    //     setSourceCode(newSourceCode);
+    // }
+
     return (
         <input
             type="text"
@@ -17,19 +30,16 @@ function SympolInput(props) {
             className={`${isValidSymbol ? "" : "invalid-symbol-field"}`}
             onChange={e => {
                 let newSymbol = e.target.value;
+                setSymbol(newSymbol);
 
                 let valid = true;
-                Object.values(symbolMap).map(value => {
+                Object.values(symbolMap).forEach(value => {
                     if (newSymbol === value[0]){
                         valid = false;
                     }
                 });
-
-                console.log(Object.values(symbolMap));
-                
                 setIsValidSymbol(valid && newSymbol !== '');
-
-                setSymbol(newSymbol);
+                
             }}
         />
 
