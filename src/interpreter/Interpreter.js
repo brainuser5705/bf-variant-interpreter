@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { SymbolContext } from "../App";
 import { EditorContext } from "../components/TextEditor";
 import Parser from "./Parser";
@@ -10,22 +10,28 @@ function Interpreter(){
     const lexicalTokens = [];
     const parserTokens = [];
 
-    const arr = new Array(3000).fill(0);
-    const index = 0;
+    var arr = new Array(3000).fill(0);
+    var index = 0;
     const { sourceCode, output, setOutput, setErrorMessage } = useContext(EditorContext);
+
+    useEffect(() => {
+        console.log(output);
+    }, [output]);
 
     function lex(){
         
         var bufferString = "";
         for(let c of sourceCode){
-            bufferString += c;
-            Object.keys(symbolMap).forEach(type => {
-                let value = symbolMap[type][0];
-                if (value === bufferString){
-                    lexicalTokens.push(type);
-                    bufferString = "";
-                }
-            });
+            if ((/\S/g).test(c)){ // ignore whitespace
+                bufferString += c;
+                Object.keys(symbolMap).forEach(type => {
+                    let value = symbolMap[type][0];
+                    if (value === bufferString){
+                        lexicalTokens.push(type);
+                        bufferString = "";
+                    }
+                });
+            }
         }
         if (bufferString !== ""){
             setErrorMessage("Symbol '" + bufferString + "' is not recognized.");
@@ -42,8 +48,8 @@ function Interpreter(){
         }
     }
     
-    function evaluate(){
-        for (let token of parserTokens){
+    function evaluateIter(tokens){
+        for (let token of tokens){
             
             let type = token[0];
     
@@ -55,7 +61,6 @@ function Interpreter(){
                     if (index !== 0){
                         index--;
                     }else{
-                        // something with error message
                         setErrorMessage("Negative index reached.")
                     }
                     break;
@@ -66,6 +71,8 @@ function Interpreter(){
                     arr[index]--;
                     break;
                 case "output":
+                    // console.log("Output: " + output);
+                    // console.log(output + String.fromCharCode(arr[index]));
                     setOutput(output + String.fromCharCode(arr[index]));
                     break;
                 case "input":
@@ -78,7 +85,7 @@ function Interpreter(){
                 case "while":
                     while (arr[index] !== 0){
                         let body = token[1];
-                        evaluate(body);
+                        evaluateIter(body);
                     }
                     break;
                 default:
@@ -86,6 +93,11 @@ function Interpreter(){
     
             }
         }
+    }
+
+    function evaluate(){
+        setOutput("");
+        evaluateIter(parserTokens);
     }
     
     return(
@@ -95,7 +107,7 @@ function Interpreter(){
                 console.log("Lexical tokens: " + lexicalTokens);
                 parse();
                 console.log("Parser tokens: " + parserTokens);
-                // evaluate();
+                evaluate();
             }}>Run</button>
         </div>
     );

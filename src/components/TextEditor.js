@@ -21,8 +21,9 @@ function TextEditor(){
                 placeholder={"Enter your program here..."}
             />
             <EditorContext.Provider value={{sourceCode, output, setOutput, setErrorMessage}}>
-                <Interpreter></Interpreter>
                 <div>{errorMessage}</div>
+                <Interpreter></Interpreter>
+                <div>{output}</div>
             </EditorContext.Provider>
         </div>
     );
