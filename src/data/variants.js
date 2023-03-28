@@ -12,4 +12,18 @@ const ook = {
     }
 };
 
-export { ook };
+const vanillaBf = {
+    "name": "Vanilla Brainf**k",
+    "symbols": {
+        "shift_right": ">",
+        "shift_left": "<",
+        "increment": "+",
+        "decrement": "-",
+        "output": ".",
+        "input": ",",
+        "start_while": "[",
+        "end_while": "]"
+    }
+}
+
+export { ook, vanillaBf};

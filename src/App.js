@@ -3,10 +3,10 @@ import './App.css';
 import { useState, createContext, useEffect } from 'react';
 import SymbolInput from './components/SymbolInput';
 import VariantButton from './components/VariantButton';
-import { ook } from './data/variants';
+import { ook, vanillaBf } from './data/variants';
 import { TextEditor } from './components/TextEditor';
 
-const variants = [ ook ];
+const variants = [ ook, vanillaBf ];
 
 const SymbolContext = createContext(null);
 
