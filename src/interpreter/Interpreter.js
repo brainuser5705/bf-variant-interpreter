@@ -2,7 +2,6 @@ import { useContext, useEffect } from "react";
 import { SymbolContext } from "../App";
 import { EditorContext } from "../components/TextEditor";
 import Parser from "./Parser";
-import Evaluator from "./Evaluator";
 import PeekableStream from "./Stream";
 
 function Interpreter(){
@@ -13,6 +12,7 @@ function Interpreter(){
 
     var arr = new Array(3000).fill(0);
     var index = 0;
+    var outputString = ""; // alleviate delayed async updates of output
     const { sourceCode, output, setOutput, setErrorMessage } = useContext(EditorContext);
 
     useEffect(() => {
@@ -49,61 +49,58 @@ function Interpreter(){
         }
     }
 
-    // function evaluateIter(tokens){
-    //     for (let token of tokens){
+    function evaluateIter(tokens){
+        for (let token of tokens){
             
-    //         let type = token[0];
+            let type = token[0];
     
-    //         switch(type){
-    //             case "shift_right":
-    //                 index++;
-    //                 break;
-    //             case "shift_left":
-    //                 if (index !== 0){
-    //                     index--;
-    //                 }else{
-    //                     setErrorMessage("Negative index reached.")
-    //                 }
-    //                 break;
-    //             case "increment":
-    //                 arr[index]++;
-    //                 break;
-    //             case "decrement":
-    //                 arr[index]--;
-    //                 break;
-    //             case "output":
-    //                 // console.log("Output: " + output);
-    //                 // console.log(output + String.fromCharCode(arr[index]));
-    //                 setOutput(output + String.fromCharCode(arr[index]));
-    //                 break;
-    //             case "input":
-    //                 let entered = "";
-    //                 while (entered.length !== 1){
-    //                     entered = prompt("Enter a character:");
-    //                 }
-    //                 arr[index] = entered.charCodeAt(0);
-    //                 break;
-    //             case "while":
-    //                 while (arr[index] !== 0){
-    //                     let body = token[1];
-    //                     evaluateIter(body);
-    //                 }
-    //                 break;
-    //             default:
-    //                 break;
+            switch(type){
+                case "shift_right":
+                    index++;
+                    break;
+                case "shift_left":
+                    if (index !== 0){
+                        index--;
+                    }else{
+                        setErrorMessage("Negative index reached.")
+                    }
+                    break;
+                case "increment":
+                    arr[index]++;
+                    break;
+                case "decrement":
+                    arr[index]--;
+                    break;
+                case "output":
+                    // console.log("Output: " + output);
+                    // console.log(output + String.fromCharCode(arr[index]));
+                    outputString += String.fromCharCode(arr[index]);
+                    setOutput(outputString);
+                    break;
+                case "input":
+                    let entered = "";
+                    while (entered.length !== 1){
+                        entered = prompt("Enter a character:");
+                    }
+                    arr[index] = entered.charCodeAt(0);
+                    break;
+                case "while":
+                    while (arr[index] !== 0){
+                        let body = token[1];
+                        evaluateIter(body);
+                    }
+                    break;
+                default:
+                    break;
     
-    //         }
-    //     }
-    // }
-
-    // function evaluate(){
-    //     setOutput("");
-    //     evaluateIter(parserTokens);
-    // }
+            }
+        }
+    }
 
     function evaluate(){
-        let evaluator = new Evaluator(parserTokens, arr, index, setOutput, setErrorMessage, "");
-        evaluator.evaluate();
+        outputString = "";
+        setOutput("");
+        evaluateIter(parserTokens);
     }
     
     return(
